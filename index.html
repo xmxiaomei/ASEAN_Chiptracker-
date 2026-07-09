@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ASEAN Chip Ecosystem Tracker</title>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<style>
+  :root { --bg:#0f172a; --panel:#ffffff; --line:#e2e8f0; --muted:#64748b; --ink:#0f172a; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; font-family: "Segoe UI", system-ui, -apple-system, sans-serif; color:var(--ink); }
+  #app { display:flex; height:100vh; }
+  #sidebar { width:360px; min-width:360px; background:var(--panel); border-right:1px solid var(--line);
+             display:flex; flex-direction:column; }
+  #brand { background:var(--bg); color:#fff; padding:16px 18px; }
+  #brand h1 { font-size:16px; margin:0 0 2px; }
+  #brand p { font-size:12px; margin:0; opacity:.7; }
+  #controls { padding:14px 18px; border-bottom:1px solid var(--line); }
+  #controls label { font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);
+                    display:block; margin:10px 0 3px; }
+  select, input { width:100%; padding:7px 8px; border:1px solid var(--line); border-radius:7px; font-size:13px; }
+  #legend { display:flex; flex-wrap:wrap; gap:6px 12px; padding:12px 18px; border-bottom:1px solid var(--line); font-size:12px; }
+  #legend span { display:inline-flex; align-items:center; gap:5px; }
+  #legend i { width:11px; height:11px; border-radius:50%; display:inline-block; }
+  #count { padding:10px 18px 4px; font-size:12px; color:var(--muted); }
+  #list { overflow:auto; padding:6px 12px 18px; flex:1; }
+  .card { border:1px solid var(--line); border-radius:9px; padding:10px 11px; margin-bottom:8px; cursor:pointer; }
+  .card:hover { border-color:#94a3b8; background:#f8fafc; }
+  .card b { font-size:13px; }
+  .card .sub { font-size:12px; color:var(--muted); margin-top:2px; }
+  .tag { display:inline-block; font-size:10px; padding:1px 7px; border-radius:20px; margin:5px 5px 0 0; color:#fff; }
+  .tag.seg { background:#475569; }
+  .tag.st  { background:#0ea5e9; }
+  #map { flex:1; }
+  .maplibregl-popup-content { font-family:inherit; font-size:12.5px; padding:11px 13px; border-radius:9px; }
+  .maplibregl-popup-content b { font-size:13px; }
+  @media (max-width:720px){ #app{flex-direction:column;} #sidebar{width:100%;min-width:0;height:52%;} #map{height:48%;} }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="sidebar">
+    <div id="brand"><h1>ASEAN Chip Ecosystem Tracker</h1><p>Facilities across the semiconductor value chain, by investor origin</p></div>
+    <div id="controls">
+      <input id="search" placeholder="Search facility or parent company…" />
+      <label>Segment</label><select id="f-segment"></select>
+      <label>Investor origin</label><select id="f-economy"></select>
+      <label>Status</label><select id="f-status"></select>
+      <label>Country</label><select id="f-country"></select>
+    </div>
+    <div id="legend"></div>
+    <div id="count"></div>
+    <div id="list"></div>
+  </div>
+  <div id="map"></div>
+</div>
+<script>
+const COLORS = { "US":"#2563eb","Taiwan":"#dc2626","China":"#ea580c","South Korea":"#7c3aed",
+  "Japan":"#db2777","EU":"#16a34a","ASEAN":"#0d9488","Other":"#6b7280" };
+const colorFor = e => COLORS[e] || COLORS["Other"];
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: { version:8,
+    sources:{ osm:{ type:"raster", tiles:["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      tileSize:256, attribution:"© OpenStreetMap contributors" } },
+    layers:[{ id:"osm", type:"raster", source:"osm" }] },
+  center: [110, 8], zoom: 3.6
+});
+
+let ALL = [], markers = [];
+const F = { segment:"", economy:"", status:"", country:"", search:"" };
+
+const uniq = (a,k) => [...new Set(a.map(d=>d[k]).filter(Boolean))].sort();
+function fillSelect(id, key){
+  const s = document.getElementById(id);
+  s.innerHTML = '<option value="">All</option>' + uniq(ALL,key).map(v=>`<option>${v}</option>`).join("");
+  s.onchange = () => { F[id.replace("f-","")] = s.value; render(); };
+}
+function buildLegend(){
+  document.getElementById("legend").innerHTML =
+    uniq(ALL,"home_economy").map(e=>`<span><i style="background:${colorFor(e)}"></i>${e}</span>`).join("");
+}
+function esc(s){ return String(s??"").replace(/[&<>"]/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
+
+function render(){
+  markers.forEach(m=>m.remove()); markers = [];
+  const rows = ALL.filter(d =>
+    (!F.segment || d.segment===F.segment) &&
+    (!F.economy || d.home_economy===F.economy) &&
+    (!F.status  || d.status===F.status) &&
+    (!F.country || d.country===F.country) &&
+    (!F.search  || (String(d.name)+String(d.ultimate_parent)).toLowerCase().includes(F.search))
+  );
+  document.getElementById("count").textContent = rows.length + " of " + ALL.length + " facilities shown";
+  const list = document.getElementById("list"); list.innerHTML = "";
+  rows.forEach(d => {
+    if (d.lat==null || d.lng==null) return;
+    const src = d.sources ? `<br><a href="${esc(d.sources)}" target="_blank" rel="noopener">source</a>` : "";
+    const popup = new maplibregl.Popup({offset:22}).setHTML(
+      `<b>${esc(d.name)}</b><br>${esc(d.ultimate_parent)} · <b style="color:${colorFor(d.home_economy)}">${esc(d.home_economy)}</b>`
+      + `<br>${esc(d.segment)} — ${esc(d.product)}<br>${esc(d.status)} · ${esc(d.city)}, ${esc(d.country)}`
+      + (d.year ? `<br>Since ${esc(d.year)}` : "") + src);
+    const m = new maplibregl.Marker({ color: colorFor(d.home_economy) })
+      .setLngLat([d.lng, d.lat]).setPopup(popup).addTo(map);
+    markers.push(m);
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `<b>${esc(d.name)}</b>
+      <div class="sub">${esc(d.ultimate_parent)} · <span style="color:${colorFor(d.home_economy)};font-weight:600">${esc(d.home_economy)}</span> · ${esc(d.city)}, ${esc(d.country)}</div>
+      <span class="tag seg">${esc(d.segment)}</span><span class="tag st">${esc(d.status)}</span>`;
+    c.onclick = () => { map.flyTo({ center:[d.lng,d.lat], zoom:9 }); m.togglePopup(); };
+    list.appendChild(c);
+  });
+}
+
+document.getElementById("search").oninput = e => { F.search = e.target.value.toLowerCase().trim(); render(); };
+
+fetch("data.json")
+  .then(r => r.json())
+  .then(data => {
+    ALL = data;
+    fillSelect("f-segment","segment");
+    fillSelect("f-economy","home_economy");
+    fillSelect("f-status","status");
+    fillSelect("f-country","country");
+    buildLegend();
+    render();
+  })
+  .catch(err => { document.getElementById("list").innerHTML =
+    "<p style='padding:12px;color:#b91c1c'>Could not load data.json. If opening locally, run a local server (see notes) rather than double-clicking the file.</p>";
+    console.error(err); });
+</script>
+</body>
+</html>
