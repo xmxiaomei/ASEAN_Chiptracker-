@@ -838,5 +838,25 @@
     "status": "Operational",
     "ultimate_parent": "Renesas Electronics Corporation",
     "year": ""
+  },
+  {
+    "capex_usd_m": "",
+    "city": "",
+    "country": "",
+    "fok": "",
+    "home_economy": "JAPAN",
+    "id": "my-pen-0010",
+    "jobs": "",
+    "lat": "",
+    "lng": "",
+    "name": "TEST",
+    "notes": null,
+    "operator": "TEST",
+    "product": "TEST",
+    "segment": "Materials",
+    "sources": "",
+    "status": "Announced",
+    "ultimate_parent": "TEST",
+    "year": ""
   }
 ]
