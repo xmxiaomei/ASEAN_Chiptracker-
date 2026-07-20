@@ -874,7 +874,7 @@
     "operator": "Unisem (M) Berhad",
     "product": "Assembly & test, wafer bumping",
     "segment": "Back-end (OSAT)",
-    "sources": "Malaysian-listed OSAT; ~41% controlled by China's Tianshui Huatian",
+    "sources": "https://www.unisemgroup.com",
     "status": "Operational",
     "ultimate_parent": "Tianshui Huatian Technology",
     "year": ""
@@ -894,7 +894,7 @@
     "operator": "Unisem (Batam)",
     "product": "Assembly & test",
     "segment": "Back-end (OSAT)",
-    "sources": "Unisem's Indonesia plant; China-controlled parent",
+    "sources": "https://www.unisemgroup.com",
     "status": "Operational",
     "ultimate_parent": "Tianshui Huatian Technology",
     "year": ""
@@ -903,7 +903,7 @@
     "capex_usd_m": "",
     "city": "Kulim, Kedah",
     "country": "Malaysia",
-    "fok": "No",
+    "fok": "no",
     "home_economy": "EU",
     "id": "MY-KUL-0003",
     "jobs": "",
@@ -914,7 +914,7 @@
     "operator": "ams OSRAM (Malaysia)",
     "product": "Opto semiconductors (LED/microLED), 8-inch",
     "segment": "Front-end fabrication",
-    "sources": "Fully-automated 8-inch opto-semiconductor fab",
+    "sources": "https://ams-osram.com",
     "status": "Operational",
     "ultimate_parent": "ams-OSRAM AG",
     "year": ""
@@ -934,7 +934,7 @@
     "operator": "Silicon Box Pte Ltd",
     "product": "Advanced panel-level packaging (chiplets)",
     "segment": "Back-end (OSAT)",
-    "sources": "Singapore chiplet-packaging pioneer; mass production since 2023",
+    "sources": "https://www.silicon-box.com",
     "status": "Operational",
     "ultimate_parent": "Silicon Box Pte Ltd",
     "year": "2023"
@@ -954,7 +954,7 @@
     "operator": "AEM Holdings Ltd",
     "product": "Test handlers / system-level test",
     "segment": "Equipment & subsystems",
-    "sources": "Singapore-listed semiconductor test equipment maker",
+    "sources": "https://aem.com.sg",
     "status": "Operational",
     "ultimate_parent": "AEM Holdings Ltd",
     "year": ""
@@ -974,7 +974,7 @@
     "operator": "Texas Instruments (Philippines) Inc",
     "product": "Assembly & test (analog)",
     "segment": "Back-end (OSAT)",
-    "sources": "One of TI's largest A&T sites; established 1979",
+    "sources": "https://www.ti.com",
     "status": "Operational",
     "ultimate_parent": "Texas Instruments",
     "year": "1979"
@@ -983,7 +983,7 @@
     "capex_usd_m": "",
     "city": "Ang Mo Kio",
     "country": "Singapore",
-    "fok": "https://www.jcetglobal.com",
+    "fok": "no",
     "home_economy": "China",
     "id": "SG-AMK-0002",
     "jobs": "",
@@ -994,16 +994,16 @@
     "operator": "STATS ChipPAC Pte Ltd",
     "product": "Advanced packaging & test (eWLB, flip-chip, SiP)",
     "segment": "Back-end (OSAT)",
-    "sources": "",
+    "sources": "https://www.jcetglobal.com",
     "status": "Operational",
     "ultimate_parent": "JCET Group",
-    "year": "No"
+    "year": ""
   },
   {
     "capex_usd_m": "",
     "city": "Seremban",
     "country": "Malaysia",
-    "fok": "https://www.nexperia.com",
+    "fok": "no",
     "home_economy": "China",
     "id": "MY-NSN-0002",
     "jobs": "",
@@ -1014,16 +1014,16 @@
     "operator": "Nexperia Malaysia Sdn Bhd",
     "product": "Discrete & power device assembly/test",
     "segment": "Back-end (OSAT)",
-    "sources": "",
+    "sources": "https://www.nexperia.com",
     "status": "Operational",
     "ultimate_parent": "Wingtech Technology",
-    "year": "No"
+    "year": ""
   },
   {
     "capex_usd_m": "",
     "city": "Cabuyao, Laguna",
     "country": "Philippines",
-    "fok": "https://www.nexperia.com",
+    "fok": "no",
     "home_economy": "China",
     "id": "PH-LAG-0003",
     "jobs": "",
@@ -1034,16 +1034,16 @@
     "operator": "Nexperia Philippines Inc",
     "product": "Discrete & power device assembly/test",
     "segment": "Back-end (OSAT)",
-    "sources": "",
+    "sources": "https://www.nexperia.com",
     "status": "Operational",
     "ultimate_parent": "Wingtech Technology",
-    "year": "No"
+    "year": ""
   },
   {
     "capex_usd_m": "",
     "city": "Ang Mo Kio",
     "country": "Singapore",
-    "fok": "https://www.utacgroup.com",
+    "fok": "no",
     "home_economy": "China",
     "id": "SG-AMK-0003",
     "jobs": "",
@@ -1054,16 +1054,16 @@
     "operator": "UTAC Holdings Ltd",
     "product": "Assembly & test (analog, automotive)",
     "segment": "Back-end (OSAT)",
-    "sources": "",
+    "sources": "https://www.utacgroup.com",
     "status": "Operational",
     "ultimate_parent": "Wise Road Capital",
-    "year": "No"
+    "year": ""
   },
   {
     "capex_usd_m": "",
     "city": "Bangkok",
     "country": "Thailand",
-    "fok": "https://www.utacgroup.com",
+    "fok": "no",
     "home_economy": "China",
     "id": "TH-BKK-0004",
     "jobs": "",
@@ -1074,9 +1074,9 @@
     "operator": "UTAC Thai Ltd",
     "product": "QFN, power, MEMS assembly & test",
     "segment": "Back-end (OSAT)",
-    "sources": "",
+    "sources": "https://www.utacgroup.com",
     "status": "Operational",
     "ultimate_parent": "Wise Road Capital",
-    "year": "No"
+    "year": ""
   }
 ]
